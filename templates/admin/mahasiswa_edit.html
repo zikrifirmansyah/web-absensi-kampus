@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% block title %}Edit Mahasiswa{% endblock %}
+{% block content %}
+<h3 class="mb-4"><i class="bi bi-pencil-square"></i> Edit Data Mahasiswa</h3>
+
+<div class="row">
+  <div class="col-md-6">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <form method="POST" id="formEdit">
+          <div class="mb-3">
+            <label class="form-label">NIM</label>
+            <input type="text" name="nim" class="form-control" value="{{ mhs.nim }}" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Nama Lengkap</label>
+            <input type="text" name="nama" class="form-control" value="{{ mhs.nama }}" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Program Studi</label>
+            <input type="text" name="prodi" class="form-control" value="{{ mhs.prodi or '' }}">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Email</label>
+            <input type="email" name="email" class="form-control" value="{{ mhs.email or '' }}">
+          </div>
+          <div class="form-text mb-3">
+            Username login &amp; password mahasiswa tidak diubah di halaman ini.
+            Untuk mengganti password, mahasiswa dapat menggunakan menu "Ganti Password" saat login.
+          </div>
+          <input type="hidden" name="foto_data_list" id="foto_data_list" value="">
+
+          <button type="submit" class="btn btn-primary w-100">
+            <i class="bi bi-save"></i> Simpan Perubahan
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="card shadow-sm">
+      <div class="card-body text-center">
+        <label class="form-label d-block">Foto Wajah Terdaftar</label>
+        {% if mhs.foto_path %}
+        <img src="{{ url_for('static', filename=mhs.foto_path.split('static/')[-1]) }}" width="150" height="150" class="rounded-circle border" style="object-fit:cover;">
+        {% endif %}
+
+        <hr>
+        <div id="areaRekamUlang" style="display:none;">
+          <p id="labelInstruksi" class="fw-bold text-primary"></p>
+          <video id="video" width="100%" height="260" autoplay class="border rounded bg-dark" style="display:none;"></video>
+          <canvas id="canvas" width="480" height="360" style="display:none;"></canvas>
+          <div id="thumbsContainer" class="mt-2 d-flex justify-content-center flex-wrap"></div>
+          <div class="mt-2">
+            <button type="button" class="btn btn-outline-primary" id="btnCapture">
+              <i class="bi bi-camera-fill"></i> Ambil Foto
+            </button>
+            <button type="button" class="btn btn-outline-secondary" id="btnReset" style="display:none;">
+              <i class="bi bi-arrow-counterclockwise"></i> Ulangi
+            </button>
+          </div>
+        </div>
+
+        <button type="button" class="btn btn-warning mt-2" id="btnMulaiRekamUlang">
+          <i class="bi bi-camera-fill"></i> Rekam Ulang Wajah
+        </button>
+        <p class="text-muted small mt-2">Rekam ulang wajah opsional — hanya lakukan jika data wajah lama sudah tidak akurat.</p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/camera.js') }}"></script>
+<script>
+document.getElementById("btnMulaiRekamUlang").addEventListener("click", function () {
+  document.getElementById("areaRekamUlang").style.display = "block";
+  document.getElementById("video").style.display = "block";
+  this.style.display = "none";
+
+  initMultiCamera({
+    videoId: "video",
+    canvasId: "canvas",
+    thumbsContainerId: "thumbsContainer",
+    btnCaptureId: "btnCapture",
+    btnResetId: "btnReset",
+    labelInstruksiId: "labelInstruksi",
+    totalFoto: {{ jumlah_foto }},
+    onComplete: function (dataUrlArray) {
+      document.getElementById("foto_data_list").value = JSON.stringify(dataUrlArray);
+    },
+    onReset: function () {
+      document.getElementById("foto_data_list").value = "";
+    }
+  });
+});
+</script>
+{% endblock %}

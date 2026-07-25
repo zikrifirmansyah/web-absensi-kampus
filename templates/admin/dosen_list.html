@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}Data Dosen{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h3><i class="bi bi-person-video3"></i> Data Dosen</h3>
+  <a href="{{ url_for('admin_dosen_tambah') }}" class="btn btn-primary">
+    <i class="bi bi-plus-circle"></i> Tambah Dosen
+  </a>
+</div>
+
+<div class="card shadow-sm">
+  <div class="card-body p-0">
+    <table class="table table-hover mb-0 align-middle">
+      <thead class="table-light">
+        <tr>
+          <th>Nama</th>
+          <th>NIP</th>
+          <th>Email</th>
+          <th>Username</th>
+          <th>Aksi</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for d in daftar %}
+        <tr>
+          <td>{{ d.nama }}</td>
+          <td>{{ d.nip or '-' }}</td>
+          <td>{{ d.email or '-' }}</td>
+          <td>{{ d.user.username }}</td>
+          <td>
+            <form method="POST" action="{{ url_for('admin_dosen_hapus', dosen_id=d.id) }}" onsubmit="return confirm('Hapus akun dosen {{ d.nama }}?');" class="d-inline">
+              <button class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
+            </form>
+          </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="5" class="text-center text-muted py-3">Belum ada dosen terdaftar.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

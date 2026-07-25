@@ -1,0 +1,21 @@
+body {
+  background-color: #f4f6f9;
+}
+
+.card {
+  border: none;
+  border-radius: 12px;
+}
+
+.navbar-brand {
+  font-weight: 600;
+}
+
+#video, #preview {
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+table th {
+  font-weight: 600;
+}

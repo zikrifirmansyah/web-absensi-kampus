@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Dashboard Mahasiswa{% endblock %}
+{% block content %}
+<div class="row">
+  <div class="col-md-4 text-center">
+    {% if mhs.foto_path %}
+    <img src="{{ url_for('static', filename=mhs.foto_path.split('static/')[-1]) }}" class="rounded-circle shadow" width="150" height="150" style="object-fit:cover;">
+    {% endif %}
+    <h5 class="mt-3">{{ mhs.nama }}</h5>
+    <p class="text-muted">{{ mhs.nim }} &middot; {{ mhs.prodi or '-' }}</p>
+  </div>
+  <div class="col-md-8">
+    <div class="card shadow-sm mb-3">
+      <div class="card-body">
+        <h5 class="card-title">Status Absensi Hari Ini</h5>
+        {% if sudah_absen %}
+        <div class="alert alert-success mb-0">
+          <i class="bi bi-check-circle-fill"></i> Anda sudah absen hari ini pukul <b>{{ sudah_absen.waktu.strftime('%H:%M:%S') }}</b>.
+        </div>
+        {% else %}
+        <div class="alert alert-warning mb-3">
+          <i class="bi bi-exclamation-circle-fill"></i> Anda belum absen hari ini.
+        </div>
+        <a href="{{ url_for('mahasiswa_absen') }}" class="btn btn-primary">
+          <i class="bi bi-camera-fill"></i> Lakukan Absen Sekarang
+        </a>
+        {% endif %}
+      </div>
+    </div>
+    <a href="{{ url_for('mahasiswa_riwayat') }}" class="btn btn-outline-secondary">
+      <i class="bi bi-clock-history"></i> Lihat Riwayat Absensi Saya
+    </a>
+  </div>
+</div>
+{% endblock %}

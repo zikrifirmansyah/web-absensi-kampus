@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}Data Mahasiswa{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h3><i class="bi bi-people-fill"></i> Data Mahasiswa</h3>
+  <a href="{{ url_for('admin_mahasiswa_tambah') }}" class="btn btn-primary">
+    <i class="bi bi-plus-circle"></i> Tambah Mahasiswa
+  </a>
+</div>
+
+<div class="card shadow-sm">
+  <div class="card-body p-0">
+    <table class="table table-hover mb-0 align-middle">
+      <thead class="table-light">
+        <tr>
+          <th>Foto</th>
+          <th>NIM</th>
+          <th>Nama</th>
+          <th>Prodi</th>
+          <th>Email</th>
+          <th>Username</th>
+          <th>Aksi</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for m in daftar %}
+        <tr>
+          <td>
+            {% if m.foto_path %}
+            <img src="{{ url_for('static', filename=m.foto_path.split('static/')[-1]) }}" width="45" height="45" style="object-fit:cover; border-radius:50%;">
+            {% endif %}
+          </td>
+          <td>{{ m.nim }}</td>
+          <td>{{ m.nama }}</td>
+          <td>{{ m.prodi or '-' }}</td>
+          <td>{{ m.email or '-' }}</td>
+          <td>{{ m.user.username }}</td>
+          <td>
+            <a href="{{ url_for('admin_mahasiswa_edit', mhs_id=m.id) }}" class="btn btn-sm btn-outline-primary">
+              <i class="bi bi-pencil-square"></i>
+            </a>
+            <form method="POST" action="{{ url_for('admin_mahasiswa_hapus', mhs_id=m.id) }}" onsubmit="return confirm('Hapus data mahasiswa {{ m.nama }}?');" class="d-inline">
+              <button class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
+            </form>
+          </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="7" class="text-center text-muted py-3">Belum ada mahasiswa terdaftar.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

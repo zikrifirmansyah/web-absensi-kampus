@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block title %}Rekap Absensi{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+  <h3 class="mb-0"><i class="bi bi-clipboard-check-fill"></i> Rekap Absensi</h3>
+  <a href="{{ url_for('admin_absensi_export', tanggal=tanggal_filter, q=kata_kunci) }}" class="btn btn-success">
+    <i class="bi bi-file-earmark-excel"></i> Export ke Excel
+  </a>
+</div>
+
+<form method="GET" class="row g-2 mb-3">
+  <div class="col-auto">
+    <input type="date" name="tanggal" value="{{ tanggal_filter }}" class="form-control">
+  </div>
+  <div class="col-auto">
+    <input type="text" name="q" value="{{ kata_kunci }}" class="form-control" placeholder="Cari nama / NIM...">
+  </div>
+  <div class="col-auto">
+    <button type="submit" class="btn btn-primary"><i class="bi bi-funnel"></i> Filter</button>
+    <a href="{{ url_for('admin_absensi_list') }}" class="btn btn-outline-secondary">Reset</a>
+  </div>
+</form>
+
+<div class="card shadow-sm">
+  <div class="card-body p-0">
+    <table class="table table-hover mb-0 align-middle">
+      <thead class="table-light">
+        <tr>
+          <th>Foto Absen</th>
+          <th>NIM</th>
+          <th>Nama</th>
+          <th>Tanggal</th>
+          <th>Waktu</th>
+          <th>Status</th>
+          <th>Kemiripan Wajah</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for a in daftar %}
+        <tr>
+          <td>
+            {% if a.foto_path %}
+            <img src="{{ url_for('static', filename=a.foto_path.split('static/')[-1]) }}" width="45" height="45" style="object-fit:cover; border-radius:6px;">
+            {% endif %}
+          </td>
+          <td>{{ a.mahasiswa.nim }}</td>
+          <td>{{ a.mahasiswa.nama }}</td>
+          <td>{{ a.tanggal.strftime('%d-%m-%Y') }}</td>
+          <td>{{ a.waktu.strftime('%H:%M:%S') }}</td>
+          <td><span class="badge bg-success">{{ a.status }}</span></td>
+          <td>{{ "%.1f"|format(a.confidence * 100) }}%</td>
+        </tr>
+        {% else %}
+        <tr><td colspan="7" class="text-center text-muted py-3">Tidak ada data absensi.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Pengaturan{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-6">
+    <h3 class="mb-4"><i class="bi bi-gear-fill"></i> Pengaturan Sistem</h3>
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title">Batas Waktu Absen</h5>
+        <p class="text-muted small">
+          Mahasiswa hanya dapat melakukan absen dalam rentang waktu berikut. Di luar
+          rentang ini, sistem akan menolak permintaan absen.
+        </p>
+        <form method="POST">
+          <div class="row g-3">
+            <div class="col-6">
+              <label class="form-label">Jam Mulai</label>
+              <input type="time" name="jam_mulai_absen" class="form-control"
+                     value="{{ pengaturan.jam_mulai_absen.strftime('%H:%M') }}" required>
+            </div>
+            <div class="col-6">
+              <label class="form-label">Jam Selesai</label>
+              <input type="time" name="jam_selesai_absen" class="form-control"
+                     value="{{ pengaturan.jam_selesai_absen.strftime('%H:%M') }}" required>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary w-100 mt-4">
+            <i class="bi bi-save"></i> Simpan Pengaturan
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

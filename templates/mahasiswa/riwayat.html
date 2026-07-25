@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Riwayat Absensi{% endblock %}
+{% block content %}
+<h3 class="mb-4"><i class="bi bi-clock-history"></i> Riwayat Absensi Saya</h3>
+
+<div class="card shadow-sm">
+  <div class="card-body p-0">
+    <table class="table table-hover mb-0 align-middle">
+      <thead class="table-light">
+        <tr>
+          <th>Tanggal</th>
+          <th>Waktu</th>
+          <th>Status</th>
+          <th>Kemiripan Wajah</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for a in daftar %}
+        <tr>
+          <td>{{ a.tanggal.strftime('%d-%m-%Y') }}</td>
+          <td>{{ a.waktu.strftime('%H:%M:%S') }}</td>
+          <td><span class="badge bg-success">{{ a.status }}</span></td>
+          <td>{{ "%.1f"|format(a.confidence * 100) }}%</td>
+        </tr>
+        {% else %}
+        <tr><td colspan="4" class="text-center text-muted py-3">Belum ada riwayat absensi.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
