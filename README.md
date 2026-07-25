@@ -85,32 +85,6 @@ Dengan menggunakan **3 foto wajah** saat registrasi, sistem menghasilkan encodin
 
 ---
 
-# 📷 Screenshot
-
-Tambahkan screenshot pada folder berikut.
-
-```
-docs/
-│── login.png
-│── dashboard-admin.png
-│── dashboard-mahasiswa.png
-│── absensi.png
-```
-
-Lalu tampilkan seperti ini.
-
-```markdown
-## Login
-
-![Login](docs/login.png)
-
-## Dashboard
-
-![Dashboard](docs/dashboard-admin.png)
-```
-
----
-
 # 📂 Struktur Project
 
 ```
